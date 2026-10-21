@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>PulsaKu Pro - Agen Pulsa & PPOB Terlengkap</title>
+  <meta name="description" content="Aplikasi PWA Agen Pulsa, Token Listrik, PDAM, BPJS dan PPOB Tercepat dan Termurah." />
+  <meta property="og:title" content="PulsaKu Pro PPOB" />
+  <meta property="og:description" content="Aplikasi PWA Agen Pulsa & PPOB Terlengkap" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- PWA Manifest & Theme -->
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#2563eb" />
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1087/1087815.png" />
+
+  <!-- Tailwind CSS v4 via CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4">
+  <!-- Custom Style -->
+  <link rel="stylesheet" href="./style.css" />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-screen pb-24 selection:bg-blue-500 selection:text-white">
+
+  <!-- Offline Banner -->
+  <div id="offline-banner" class="hidden bg-amber-600 text-white text-xs py-1.5 px-4 text-center font-medium sticky top-0 z-50 flex items-center justify-center gap-2">
+    <i data-lucide="wifi-off" class="w-3.5 h-3.5"></i>
+    <span>Anda sedang offline. Beberapa fitur transaksi memerlukan koneksi internet.</span>
+  </div>
+
+  <!-- PWA Install Prompt Banner -->
+  <div id="install-banner" class="hidden bg-blue-600 text-white p-3 shadow-lg fixed bottom-16 left-4 right-4 z-40 rounded-xl flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="bg-white/20 p-2 rounded-lg">
+        <i data-lucide="download" class="w-5 h-5"></i>
+      </div>
+      <div>
+        <p class="font-bold text-sm">Install PulsaKu Pro</p>
+        <p class="text-xs text-blue-100">Akses lebih cepat & ringan seperti aplikasi asli</p>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <button id="btn-install" class="bg-white text-blue-600 font-bold px-3 py-1.5 rounded-lg text-xs shadow hover:bg-blue-50 transition">Install</button>
+      <button id="btn-close-install" class="text-blue-100 hover:text-white px-2 text-xs">Tutup</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="card-bg sticky top-0 z-30 border-b shadow-sm px-4 py-3">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
+          <i data-lucide="zap" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="font-bold text-base leading-tight">PulsaKu Pro</h1>
+            <span class="bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 text-[10px] font-bold px-1.5 py-0.5 rounded">GOLD</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400">ID: AG-88921 • Bogor</p>
+        </div>
+      </div>
+      
+      <div class="text-right">
+        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Saldo Agen</p>
+        <p id="header-saldo" class="font-extrabold text-sm sm:text-base text-blue-600 dark:text-blue-400">Rp 1.450.000</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-md mx-auto p-4">
+
+    <!-- TAB 1: TRANSAKSI & MENU UTAMA -->
+    <section id="tab-transaksi" class="space-y-5">
+      
+      <!-- Banner Promo / Berita -->
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-4 shadow-lg relative overflow-hidden">
+        <div class="absolute -right-6 -bottom-6 opacity-10">
+          <i data-lucide="smartphone" class="w-32 h-32"></i>
+        </div>
+        <div class="relative z-10">
+          <span class="bg-white/20 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">Flash Sale PPOB</span>
+          <h2 class="font-bold text-lg mt-1">Cashback 5% Token Listrik!</h2>
+          <p class="text-xs text-blue-100 mt-0.5">Berlaku untuk semua transaksi PLN Prabayar hari ini. Komisi langsung masuk saldo.</p>
+        </div>
+      </div>
+
+      <!-- Kategori Produk Grid -->
+      <div>
+        <h3 class="font-bold text-sm mb-3 flex items-center justify-between">
+          <span>Menu Produk PPOB</span>
+          <span class="text-xs text-blue-600 dark:text-blue-400 font-medium cursor-pointer" onclick="switchCategory('all')">Lihat Semua</span>
+        </h3>
+        <div class="grid grid-cols-4 gap-3">
+          <button onclick="selectCategory('pulsa')" class="category-btn card-bg border rounded-xl p-3 text-center flex flex-col items-center gap-1.5 shadow-xs hover:border-blue-500 transition active:scale-95" data-cat="pulsa">
+            <div class="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-950/50 text-orange-600 flex items-center justify-center">
+              <i data-lucide="smartphone" class="w-6 h-6"></i>
+            </div>
+            <span class="text-xs font-semibold">Pulsa</span>
+          </button>
+          
+          <button onclick="selectCategory('data')" class="category-btn card-bg border rounded-xl p-3 text-center flex flex-col items-center gap-1.5 shadow-xs hover:border-blue-500 transition active:scale-95" data-cat="data">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-950/50 text-blue-600 flex items-center justify-center">
+              <i data-lucide="wifi" class="w-6 h-6"></i>
+            </div>
+            <span class="text-xs font-semibold">Paket Data</span>
+          </button>
+
+          <button onclick="selectCategory('pln')" class="category-btn card-bg border rounded-xl p-3 text-center flex flex-col items-center gap-1.5 shadow-xs hover:border-blue-500 transition active:scale-95" data-cat="pln">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950/50 text-amber-600 flex items-center justify-center">
+              <i data-lucide="zap" class="w-6 h-6"></i>
+            </div>
+            <span class="text-xs font-semibold">Token PLN</span>
+          </button>
+
+          <button onclick="selectCategory('pdam')" class="category-btn card-bg border rounded-xl p-3 text-center flex flex-col items-center gap-1.5 shadow-xs hover:border-blue-500 transition active:scale-95" data-cat="pdam">
+            <div class="w-12 h-12 rounded-xl bg-cyan-100 dark:bg-cyan-950/50 text-cyan-600 flex items-center justify-center">
+              <i data-lucide="droplet" class="w-6 h-6"></i>
+            </div>
+            <span class="text-xs font-semibold">PDAM</span>
+          </button>
+
+          <button onclick="selectCategory('bpjs')" class="category-btn card-bg border rounded-xl p-3 text-center flex flex-col items-center gap-1.5 shadow-xs hover:border-blue-500 transition active:scale-95" data-cat="bpjs">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 flex items-center justify-center">
+              <i data-lucide="heart-pulse" class="w-6 h-6"></i>
+            </div>
+            <span class="text-xs font-semibold">BPJS</span>
+          </button>
+
+          <button onclick="selectCategory('game')" class="category-btn card-bg border rounded-xl p-3 text-center flex flex-col items-center gap-1.5 shadow-xs hover:border-blue-500 transition active:scale-95" data-cat="game">
+            <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-950/50 text-purple-600 flex items-center justify-center">
+              <i data-lucide="gamepad-2" class="w-6 h-6"></i>
+            </div>
+            <span class="text-xs font-semibold">Voucher Game</span>
+          </button>
+
+          <button onclick="selectCategory('ewallet')" class="category-btn card-bg border rounded-xl p-3 text-center flex flex-col items-center gap-1.5 shadow-xs hover:border-blue-500 transition active:scale-95" data-cat="ewallet">
+            <div class="w-12 h-12 rounded-xl bg-teal-100 dark:bg-teal-950/50 text-teal-600 flex items-center justify-center">
+              <i data-lucide="wallet" class="w-6 h-6"></i>
+            </div>
+            <span class="text-xs font-semibold">E-Wallet</span>
+          </button>
+
+          <button onclick="selectCategory('pascabayar')" class="category-btn card-bg border rounded-xl p-3 text-center flex flex-col items-center gap-1.5 shadow-xs hover:border-blue-500 transition active:scale-95" data-cat="pascabayar">
+            <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-950/50 text-rose-600 flex items-center justify-center">
+              <i data-lucide="file-text" class="w-6 h-6"></i>
+            </div>
+            <span class="text-xs font-semibold">Pascabayar</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Form Transaksi Card -->
+      <div class="card-bg border rounded-2xl p-4 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b pb-3">
+          <h3 id="form-title" class="font-bold text-sm flex items-center gap-2">
+            <i data-lucide="smartphone" class="w-4 h-4 text-blue-600"></i>
+            <span>Form Pembelian Pulsa Reguler</span>
+          </h3>
+          <span id="detected-provider" class="text-xs font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Pilih Nomor</span>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label id="input-label" class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-400">Nomor HP / Tujuan</label>
+            <div class="relative">
+              <input type="tel" id="target-input" placeholder="Contoh: 081234567890" maxlength="16" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl px-3 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="handleTargetInput(this.value)">
+              <div class="absolute right-3 top-2.5 text-slate-400 flex items-center gap-1">
+                <i data-lucide="contact" class="w-5 h-5 cursor-pointer hover:text-blue-600" onclick="alert('Fitur kontak buku alamat aktif')"></i>
+              </div>
+            </div>
+            <p id="validation-msg" class="text-[11px] text-slate-500 mt-1">Masukkan nomor handphone atau ID pelanggan yang valid.</p>
+          </div>
+
+          <!-- Denominasi Pilihan Produk -->
+          <div>
+            <label class="block text-xs font-semibold mb-2 text-slate-600 dark:text-slate-400">Pilih Nominal Produk</label>
+            <div id="product-grid" class="grid grid-cols-2 gap-2.5">
+              <!-- Dynamically populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t flex items-center justify-between">
+          <div>
+            <p class="text-[10px] text-slate-500">Total Pembayaran</p>
+            <p id="summary-price" class="font-extrabold text-base text-blue-600 dark:text-blue-400">Rp 0</p>
+          </div>
+          <button id="btn-checkout" disabled onclick="openCheckoutModal()" class="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:dark:bg-slate-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow transition active:scale-95">
+            Bayar Sekarang
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: RIWAYAT TRANSAKSI -->
+    <section id="tab-riwayat" class="hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-bold text-base">Riwayat Transaksi</h3>
+        <div class="flex gap-2">
+          <select id="filter-status" onchange="renderHistory()" class="bg-slate-100 dark:bg-slate-900 border rounded-lg text-xs px-2.5 py-1.5 font-medium">
+            <option value="all">Semua Status</option>
+            <option value="Sukses">Sukses</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="history-list" class="space-y-3">
+        <!-- Dynamically rendered -->
+      </div>
+    </section>
+
+    <!-- TAB 3: TOPUP SALDO -->
+    <section id="tab-topup" class="hidden space-y-4">
+      <div class="card-bg border rounded-2xl p-4 shadow-sm space-y-4">
+        <h3 class="font-bold text-base flex items-center gap-2">
+          <i data-lucide="wallet" class="w-5 h-5 text-blue-600"></i>
+          <span>Topup Saldo Agen</span>
+        </h3>
+        <p class="text-xs text-slate-500">Pilih nominal topup saldo otomatis via Virtual Account / QRIS. Masuk instan 24 jam.</p>
+
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="selectTopupNominal(50000)" class="topup-nom-btn border rounded-xl p-3 text-center hover:border-blue-500 transition">
+            <p class="text-xs text-slate-500">Topup</p>
+            <p class="font-bold text-sm">50 Ribu</p>
+          </button>
+          <button onclick="selectTopupNominal(100000)" class="topup-nom-btn border rounded-xl p-3 text-center hover:border-blue-500 transition">
+            <p class="text-xs text-slate-500">Topup</p>
+            <p class="font-bold text-sm">100 Ribu</p>
+          </button>
+          <button onclick="selectTopupNominal(250000)" class="topup-nom-btn border rounded-xl p-3 text-center hover:border-blue-500 transition">
+            <p class="text-xs text-slate-500">Topup</p>
+            <p class="font-bold text-sm">250 Ribu</p>
+          </button>
+          <button onclick="selectTopupNominal(500000)" class="topup-nom-btn border rounded-xl p-3 text-center hover:border-blue-500 transition">
+            <p class="text-xs text-slate-500">Topup</p>
+            <p class="font-bold text-sm">500 Ribu</p>
+          </button>
+          <button onclick="selectTopupNominal(1000000)" class="topup-nom-btn border rounded-xl p-3 text-center hover:border-blue-500 transition">
+            <p class="text-xs text-slate-500">Topup</p>
+            <p class="font-bold text-sm">1 Juta</p>
+          </button>
+          <button onclick="selectTopupNominal(2000000)" class="topup-nom-btn border rounded-xl p-3 text-center hover:border-blue-500 transition">
+            <p class="text-xs text-slate-500">Topup</p>
+            <p class="font-bold text-sm">2 Juta</p>
+          </button>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-400">Atau Nominal Lain (Rp)</label>
+          <input type="number" id="custom-topup" placeholder="Contoh: 150000" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl px-3 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="selectedTopupAmount = parseInt(this.value) || 0">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold mb-2 text-slate-600 dark:text-slate-400">Metode Pembayaran</label>
+          <div class="space-y-2">
+            <label class="flex items-center justify-between p-3 border rounded-xl cursor-pointer hover:border-blue-500">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-blue-100 text-blue-600 flex items-center font-bold text-xs justify-center">QR</div>
+                <div>
+                  <p class="text-xs font-bold">QRIS All Payment</p>
+                  <p class="text-[10px] text-slate-500">GoPay, OVO, DANA, BCA, ShopeePay</p>
+                </div>
+              </div>
+              <input type="radio" name="payment-method" checked class="accent-blue-600">
+            </label>
+            <label class="flex items-center justify-between p-3 border rounded-xl cursor-pointer hover:border-blue-500">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-indigo-100 text-indigo-600 flex items-center font-bold text-xs justify-center">VA</div>
+                <div>
+                  <p class="text-xs font-bold">Virtual Account BCA / Mandiri</p>
+                  <p class="text-[10px] text-slate-500">Otomatis verifikasi 2 menit</p>
+                </div>
+              </div>
+              <input type="radio" name="payment-method" class="accent-blue-600">
+            </label>
+          </div>
+        </div>
+
+        <button onclick="processTopup()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs shadow transition active:scale-95">
+          Buat Tiket Topup Saldo
+        </button>
+      </div>
+    </section>
+
+    <!-- TAB 4: AKUN & PENGATURAN -->
+    <section id="tab-akun" class="hidden space-y-4">
+      <div class="card-bg border rounded-2xl p-4 shadow-sm space-y-4">
+        <div class="flex items-center gap-3 border-b pb-4">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow">
+            CB
+          </div>
+          <div>
+            <h3 class="font-bold text-base">Counter Berkah Cell</h3>
+            <p class="text-xs text-slate-500">0812-9988-7766 • Agen Gold Master</p>
+            <span class="inline-block mt-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Akun Terverifikasi</span>
+          </div>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between py-2 border-b">
+            <span class="text-slate-500">Komisi Referal</span>
+            <span class="font-bold text-emerald-600">Rp 125.000</span>
+          </div>
+          <div class="flex justify-between py-2 border-b">
+            <span class="text-slate-500">Versi Aplikasi PWA</span>
+            <span class="font-bold">v1.2.0 (Offline Ready)</span>
+          </div>
+          <div class="flex justify-between py-2 border-b">
+            <span class="text-slate-500">Koneksi Bluetooth Printer</span>
+            <span id="bt-status-label" class="font-bold text-amber-600">Belum Terhubung</span>
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-2">
+          <button onclick="connectThermalPrinter()" class="w-full border border-blue-500 text-blue-600 dark:text-blue-400 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>Hubungkan Printer Thermal Bluetooth</span>
+          </button>
+          
+          <button onclick="window.open('https://wa.me/6281234567890', '_blank')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow transition">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>Bantuan CS WhatsApp 24 Jam</span>
+          </button>
+
+          <button onclick="resetData()" class="w-full text-red-600 dark:text-red-400 font-bold py-2 text-xs hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl transition">
+            Reset Data & Riwayat
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="card-bg border-t fixed bottom-0 left-0 right-0 z-30 shadow-lg">
+    <div class="max-w-md mx-auto flex justify-around py-2">
+      <button onclick="switchTab('transaksi')" class="nav-btn flex flex-col items-center gap-1 text-blue-600" data-tab="transaksi">
+        <i data-lucide="grid" class="w-5 h-5"></i>
+        <span class="text-[10px] font-bold">Transaksi</span>
+      </button>
+      <button onclick="switchTab('riwayat')" class="nav-btn flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600" data-tab="riwayat">
+        <i data-lucide="clock" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium">Riwayat</span>
+      </button>
+      <button onclick="switchTab('topup')" class="nav-btn flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600" data-tab="topup">
+        <i data-lucide="wallet" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium">Topup</span>
+      </button>
+      <button onclick="switchTab('akun')" class="nav-btn flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600" data-tab="akun">
+        <i data-lucide="user" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium">Akun</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Modal Checkout / Konfirmasi -->
+  <div id="checkout-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="card-bg w-full max-w-md rounded-t-3xl sm:rounded-2xl p-5 shadow-2xl space-y-4 animate-in fade-in slide-in-from-bottom duration-200">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="font-bold text-base">Konfirmasi Pembayaran</h3>
+        <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <div class="flex justify-between py-1">
+          <span class="text-slate-500">Produk</span>
+          <span id="modal-prod-name" class="font-bold">Pulsa Telkomsel 10.000</span>
+        </div>
+        <div class="flex justify-between py-1">
+          <span class="text-slate-500">Tujuan / No HP</span>
+          <span id="modal-target" class="font-bold">081234567890</span>
+        </div>
+        <div class="flex justify-between py-1">
+          <span class="text-slate-500">Harga Agen</span>
+          <span id="modal-price" class="font-bold text-blue-600">Rp 10.300</span>
+        </div>
+        <div class="flex justify-between py-1 border-t pt-2">
+          <span class="text-slate-500 font-medium">Sisa Saldo Setelah Transaksi</span>
+          <span id="modal-sisa-saldo" class="font-bold text-emerald-600">Rp 1.439.700</span>
+        </div>
+      </div>
+
+      <div class="pt-2">
+        <button onclick="executeTransaction()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs shadow transition active:scale-95 flex items-center justify-center gap-2">
+          <i data-lucide="check-circle" class="w-4 h-4"></i>
+          <span>Proses Transaksi Sekarang</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Struk / Sukses -->
+  <div id="receipt-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="card-bg w-full max-w-sm rounded-2xl p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="text-center space-y-1">
+        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2">
+          <i data-lucide="check" class="w-6 h-6"></i>
+        </div>
+        <h3 class="font-bold text-base text-emerald-600">Transaksi Berhasil!</h3>
+        <p class="text-xs text-slate-500">Struk resmi agen pulsa & PPOB</p>
+      </div>
+
+      <div id="receipt-content" class="bg-slate-50 dark:bg-slate-900 border border-dashed rounded-xl p-4 font-mono text-[11px] space-y-1.5">
+        <!-- Receipt details -->
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button onclick="printReceiptBluetooth()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow">
+          <i data-lucide="printer" class="w-4 h-4"></i>
+          <span>Cetak Bluetooth</span>
+        </button>
+        <button onclick="closeReceiptModal()" class="flex-1 border font-bold py-2.5 rounded-xl text-xs hover:bg-slate-100 dark:hover:bg-slate-800">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    // State Aplikasi
+    let saldoAgen = 1450000;
+    let currentCategory = 'pulsa';
+    let selectedProduct = null;
+    let bluetoothDevice = null;
+    let bluetoothCharacteristic = null;
+    let selectedTopupAmount = 0;
+
+    // Data Produk PPOB Lengkap
+    const productsData = {
+      pulsa: [
+        { id: 'p1', name: 'Telkomsel 5.000', price: 5300, desc: 'Masa aktif +7 hari' },
+        { id: 'p2', name: 'Telkomsel 10.000', price: 10250, desc: 'Masa aktif +15 hari' },
+        { id: 'p3', name: 'Telkomsel 20.000', price: 19900, desc: 'Masa aktif +30 hari' },
+        { id: 'p4', name: 'Telkomsel 50.000', price: 48900, desc: 'Masa aktif +45 hari' },
+        { id: 'p5', name: 'Indosat 10.000', price: 10300, desc: 'Freedom internet mini' },
+        { id: 'p6', name: 'XL 10.000', price: 10350, desc: 'Paket regular XL' },
+        { id: 'p7', name: 'Tri 10.000', price: 10200, desc: 'AON Kuota++' },
+        { id: 'p8', name: 'Smartfren 10.000', price: 10250, desc: 'Unlimited chat' }
+      ],
+      data: [
+        { id: 'd1', name: 'Telkomsel Data 2GB', price: 15000, desc: 'Masa aktif 3 hari' },
+        { id: 'd2', name: 'Telkomsel Data 5GB', price: 32000, desc: 'Masa aktif 7 hari' },
+        { id: 'd3', name: 'Indosat Freedom 4GB', price: 22000, desc: 'Berlaku 24 jam' },
+        { id: 'd4', name: 'XL Combo Lite 6GB', price: 28000, desc: 'Bonus Nelpon All Operator' }
+      ],
+      pln: [
+        { id: 'pln1', name: 'Token PLN 20.000', price: 20500, desc: 'Biaya admin Rp 1.500' },
+        { id: 'pln2', name: 'Token PLN 50.000', price: 50500, desc: 'Cashback 5% aktif' },
+        { id: 'pln3', name: 'Token PLN 100.000', price: 100500, desc: 'Terlaris' },
+        { id: 'pln4', name: 'Token PLN 200.000', price: 200500, desc: 'Daya besar' },
+        { id: 'pln5', name: 'Token PLN 500.000', price: 500500, desc: 'Bonus pulsa gratis' },
+        { id: 'pln6', name: 'Token PLN 1.000.000', price: 1000500, desc: 'VIP Agen' }
+      ],
+      pdam: [
+        { id: 'pdam1', name: 'PDAM Kota Bogor', price: 78000, desc: 'Tagihan Air Bulanan' },
+        { id: 'pdam2', name: 'PDAM Kabupaten Bogor', price: 92500, desc: 'Tagihan Air Bulanan' },
+        { id: 'pdam3', name: 'PAM JAYA Jakarta', price: 135000, desc: 'Tagihan Air Bulanan' }
+      ],
+      bpjs: [
+        { id: 'bpjs1', name: 'BPJS Kesehatan Kelas 1', price: 150000, desc: 'Iuran per orang/bulan' },
+        { id: 'bpjs2', name: 'BPJS Kesehatan Kelas 2', price: 100000, desc: 'Iuran per orang/bulan' },
+        { id: 'bpjs3', name: 'BPJS Kesehatan Kelas 3', price: 35000, desc: 'Iuran subsidi pemerintah' }
+      ],
+      game: [
+        { id: 'g1', name: 'Mobile Legends 86 Diamonds', price: 22500, desc: 'Instant SN' },
+        { id: 'g2', name: 'Free Fire 140 Diamonds', price: 19500, desc: 'Instant SN' },
+        { id: 'g3', name: 'PUBG Mobile 60 UC', price: 16000, desc: 'Instant SN' },
+        { id: 'g4', name: 'Higgs Domino 1B Koin', price: 65000, desc: 'Open 24 Jam' }
+      ],
+      ewallet: [
+        { id: 'ew1', name: 'Topup DANA 50.000', price: 51500, desc: 'Tanpa potongan admin' },
+        { id: 'ew2', name: 'Topup GoPay 50.000', price: 51500, desc: 'Driver / User' },
+        { id: 'ew3', name: 'Topup OVO 50.000', price: 51500, desc: 'Instant masuk' },
+        { id: 'ew4', name: 'Topup ShopeePay 50.000', price: 51500, desc: 'Instant masuk' }
+      ],
+      pascabayar: [
+        { id: 'pas1', name: 'Telkomsel Halo Pascabayar', price: 85000, desc: 'Tagihan bulanan' },
+        { id: 'pas2', name: 'Indosat Matrix Pascabayar', price: 75000, desc: 'Tagihan bulanan' },
+        { id: 'pas3', name: 'PLN Pascabayar', price: 145000, desc: 'Tagihan listrik bulanan' }
+      ]
+    };
+
+    // Riwayat Transaksi Awal
+    let historyData = [
+      { id: 'TRX-99821', product: 'Token PLN 50.000', target: '32109876543', price: 50500, status: 'Sukses', time: 'Hari ini, 09:42', sn: 'SN: 8829-1192-3342-9912' },
+      { id: 'TRX-99820', product: 'Telkomsel 20.000', target: '081234567890', price: 19900, status: 'Sukses', time: 'Hari ini, 08:15', sn: 'SN: 9921-0021-4412-8811' },
+      { id: 'TRX-99819', product: 'Mobile Legends 86 Diamonds', target: '44910293(2102)', price: 22500, status: 'Sukses', time: 'Kemarin, 21:30', sn: 'SN: ML-77291-88192' }
+    ];
+
+    // Inisialisasi Aplikasi
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      updateHeaderSaldo();
+      selectCategory('pulsa');
+      renderHistory();
+      setupPWAInstall();
+      setupNetworkStatus();
+    });
+
+    function updateHeaderSaldo() {
+      document.getElementById('header-saldo').innerText = formatRupiah(saldoAgen);
+    }
+
+    function formatRupiah(num) {
+      return 'Rp ' + num.toLocaleString('id-ID');
+    }
+
+    // Navigasi Tab
+    function switchTab(tabId) {
+      document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('text-blue-600');
+        btn.classList.add('text-slate-400');
+        const span = btn.querySelector('span');
+        span.classList.remove('font-bold');
+        span.classList.add('font-medium');
+      });
+
+      const activeBtn = document.querySelector(`.nav-btn[data-tab="${tabId}"]`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('text-blue-600');
+        const span = activeBtn.querySelector('span');
+        span.classList.remove('font-medium');
+        span.classList.add('font-bold');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Pilih Kategori Produk
+    function selectCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.category-btn').forEach(b => {
+        b.classList.remove('border-blue-600', 'bg-blue-50/50', 'dark:bg-blue-950/20');
+      });
+      const activeBtn = document.querySelector(`.category-btn[data-cat="${cat}"]`);
+      if (activeBtn) {
+        activeBtn.classList.add('border-blue-600', 'bg-blue-50/50', 'dark:bg-blue-950/20');
+      }
+
+      const titles = {
+        pulsa: 'Form Pembelian Pulsa Reguler',
+        data: 'Form Pembelian Paket Internet Data',
+        pln: 'Form Pembelian Token Listrik PLN',
+        pdam: 'Form Pembayaran Tagihan PDAM',
+        bpjs: 'Form Pembayaran BPJS Kesehatan',
+        game: 'Form Pembelian Voucher Game',
+        ewallet: 'Form Topup Saldo E-Wallet',
+        pascabayar: 'Form Pembayaran Pascabayar'
+      };
+
+      const labels = {
+        pulsa: 'Nomor Handphone',
+        data: 'Nomor Handphone',
+        pln: 'Nomor Meter / ID Pelanggan PLN',
+        pdam: 'Nomor Pelanggan / Sambungan Langganan',
+        bpjs: 'Nomor VA BPJS Kesehatan',
+        game: 'ID User Game / Server',
+        ewallet: 'Nomor Akun / Handphone E-Wallet',
+        pascabayar: 'Nomor Pelanggan Pascabayar'
+      };
+
+      document.getElementById('form-title').querySelector('span').innerText = titles[cat] || 'Form Transaksi';
+      document.getElementById('input-label').innerText = labels[cat] || 'Nomor Tujuan';
+      document.getElementById('target-input').placeholder = cat === 'pln' ? 'Contoh: 32109876543' : 'Contoh: 081234567890';
+
+      renderProducts(cat);
+      selectedProduct = null;
+      updateSummary();
+    }
+
+    function renderProducts(cat) {
+      const grid = document.getElementById('product-grid');
+      const list = productsData[cat] || productsData['pulsa'];
+      
+      grid.innerHTML = list.map(p => `
+        <div onclick='selectProductItem(${JSON.stringify(p)})' class="prod-item border rounded-xl p-3 cursor-pointer hover:border-blue-500 transition card-bg relative" data-id="${p.id}">
+          <p class="font-bold text-xs line-clamp-1">${p.name}</p>
+          <p class="text-blue-600 dark:text-blue-400 font-extrabold text-sm mt-0.5">${formatRupiah(p.price)}</p>
+          <p class="text-[10px] text-slate-400 mt-1">${p.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    function selectProductItem(prod) {
+      selectedProduct = prod;
+      document.querySelectorAll('.prod-item').forEach(el => {
+        el.classList.remove('border-blue-600', 'bg-blue-50', 'dark:bg-blue-950/30', 'ring-2', 'ring-blue-500');
+      });
+      const el = document.querySelector(`.prod-item[data-id="${prod.id}"]`);
+      if (el) {
+        el.classList.add('border-blue-600', 'bg-blue-50', 'dark:bg-blue-950/30', 'ring-2', 'ring-blue-500');
+      }
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const target = document.getElementById('target-input').value;
+      const priceEl = document.getElementById('summary-price');
+      const checkoutBtn = document.getElementById('btn-checkout');
+
+      if (selectedProduct) {
+        priceEl.innerText = formatRupiah(selectedProduct.price);
+        if (target.length >= 4) {
+          checkoutBtn.removeAttribute('disabled');
+        } else {
+          checkoutBtn.setAttribute('disabled', 'true');
+        }
+      } else {
+        priceEl.innerText = 'Rp 0';
+        checkoutBtn.setAttribute('disabled', 'true');
+      }
+    }
+
+    function handleTargetInput(val) {
+      const detected = document.getElementById('detected-provider');
+      if (val.startsWith('0811') || val.startsWith('0812') || val.startsWith('0813') || val.startsWith('0821') || val.startsWith('0822') || val.startsWith('0852') || val.startsWith('0853')) {
+        detected.innerText = 'Telkomsel';
+        detected.className = 'text-xs font-bold px-2 py-0.5 rounded bg-red-100 text-red-600';
+      } else if (val.startsWith('0814') || val.startsWith('0815') || val.startsWith('0816') || val.startsWith('0855') || val.startsWith('0856') || val.startsWith('0857') || val.startsWith('0858')) {
+        detected.innerText = 'Indosat';
+        detected.className = 'text-xs font-bold px-2 py-0.5 rounded bg-yellow-100 text-yellow-700';
+      } else if (val.startsWith('0817') || val.startsWith('0818') || val.startsWith('0819') || val.startsWith('0859') || val.startsWith('0877') || val.startsWith('0878')) {
+        detected.innerText = 'XL / Axis';
+        detected.className = 'text-xs font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-600';
+      } else if (val.length >= 4) {
+        detected.innerText = 'Valid';
+        detected.className = 'text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-600';
+      } else {
+        detected.innerText = 'Pilih Nomor';
+        detected.className = 'text-xs font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-600';
+      }
+      updateSummary();
+    }
+
+    function openCheckoutModal() {
+      if (!selectedProduct) return;
+      const target = document.getElementById('target-input').value;
+
+      document.getElementById('modal-prod-name').innerText = selectedProduct.name;
+      document.getElementById('modal-target').innerText = target;
+      document.getElementById('modal-price').innerText = formatRupiah(selectedProduct.price);
+      document.getElementById('modal-sisa-saldo').innerText = formatRupiah(saldoAgen - selectedProduct.price);
+
+      document.getElementById('checkout-modal').classList.remove('hidden');
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkout-modal').classList.add('hidden');
+    }
+
+    let lastTransactionResult = null;
+
+    function executeTransaction() {
+      closeCheckoutModal();
+      if (saldoAgen < selectedProduct.price) {
+        alert('Saldo Anda tidak mencukupi! Silakan lakukan topup saldo terlebih dahulu.');
+        switchTab('topup');
+        return;
+      }
+
+      saldoAgen -= selectedProduct.price;
+      updateHeaderSaldo();
+
+      const target = document.getElementById('target-input').value;
+      const trxId = 'TRX-' + Math.floor(10000 + Math.random() * 90000);
+      const snCode = 'SN: ' + Math.floor(1000 + Math.random() * 9000) + '-' + Math.floor(1000 + Math.random() * 9000) + '-' + Math.floor(1000 + Math.random() * 9000);
+      
+      const newTrx = {
+        id: trxId,
+        product: selectedProduct.name,
+        target: target,
+        price: selectedProduct.price,
+        status: 'Sukses',
+        time: 'Baru saja',
+        sn: snCode
+      };
+
+      historyData.unshift(newTrx);
+      lastTransactionResult = newTrx;
+      renderHistory();
+
+      // Show Receipt Modal
+      showReceipt(newTrx);
+    }
+
+    function showReceipt(trx) {
+      const content = document.getElementById('receipt-content');
+      content.innerHTML = `
+        <div class="text-center font-bold pb-2 border-b border-dashed">PULSAKU PRO PPOB RECEIPT</div>
+        <div>ID TRX  : ${trx.id}</div>
+        <div>WAKTU   : ${trx.time}</div>
+        <div>PRODUK  : ${trx.product}</div>
+        <div>TUJUAN  : ${trx.target}</div>
+        <div>HARGA   : ${formatRupiah(trx.price)}</div>
+        <div class="pt-2 border-t border-dashed font-bold text-blue-600">${trx.sn}</div>
+        <div class="text-center pt-2 text-[10px] text-slate-400">Terima Kasih Telah Bertransaksi</div>
+      `;
+      document.getElementById('receipt-modal').classList.remove('hidden');
+    }
+
+    function closeReceiptModal() {
+      document.getElementById('receipt-modal').classList.add('hidden');
+    }
+
+    function renderHistory() {
+      const filter = document.getElementById('filter-status').value;
+      const listEl = document.getElementById('history-list');
+
+      const filtered = historyData.filter(item => {
+        if (filter === 'all') return true;
+        return item.status === filter;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs">Belum ada riwayat transaksi.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(item => `
+        <div class="card-bg border rounded-xl p-3.5 shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs">${item.id}</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded ${item.status === 'Sukses' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300' : 'bg-amber-100 text-amber-700'}">${item.status}</span>
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <div>
+              <p class="font-bold">${item.product}</p>
+              <p class="text-slate-500 text-[11px]">Tujuan: ${item.target} • ${item.time}</p>
+            </div>
+            <div class="text-right">
+              <p class="font-extrabold text-blue-600">${formatRupiah(item.price)}</p>
+              <button onclick='showReceipt(${JSON.stringify(item)})' class="mt-1 text-[10px] bg-slate-100 dark:bg-slate-800 hover:bg-blue-100 hover:text-blue-600 px-2 py-1 rounded font-medium transition">Struk</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Topup Saldo
+    function selectTopupNominal(amt) {
+      selectedTopupAmount = amt;
+      document.getElementById('custom-topup').value = amt;
+      document.querySelectorAll('.topup-nom-btn').forEach(b => b.classList.remove('border-blue-600', 'bg-blue-50'));
+      event.currentTarget.classList.add('border-blue-600', 'bg-blue-50');
+    }
+
+    function processTopup() {
+      const amt = parseInt(document.getElementById('custom-topup').value) || selectedTopupAmount;
+      if (amt < 10000) {
+        alert('Minimal topup saldo adalah Rp 10.000');
+        return;
+      }
+
+      saldoAgen += amt;
+      updateHeaderSaldo();
+      alert(`Topup saldo sebesar ${formatRupiah(amt)} berhasil diproses dan ditambahkan ke saldo agen!`);
+      switchTab('transaksi');
+    }
+
+    // Web Bluetooth Thermal Printer Integration
+    async function connectThermalPrinter() {
+      try {
+        if (!navigator.bluetooth) {
+          alert('Web Bluetooth API tidak didukung di browser ini. Gunakan Chrome di Android/Desktop.');
+          return;
+        }
+
+        bluetoothDevice = await navigator.bluetooth.requestDevice({
+          acceptAllDevices: true,
+          optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb']
+        });
+
+        const server = await bluetoothDevice.gatt.connect();
+        const service = await server.getPrimaryService('000018f0-0000-1000-8000-00805f9b34fb');
+        bluetoothCharacteristic = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb');
+
+        document.getElementById('bt-status-label').innerText = 'Terhubung: ' + bluetoothDevice.name;
+        document.getElementById('bt-status-label').className = 'font-bold text-emerald-600';
+        alert('Berhasil terhubung ke printer thermal Bluetooth!');
+      } catch (err) {
+        console.error('Bluetooth connection failed:', err);
+        alert('Koneksi printer dibatalkan atau gagal: ' + err.message);
+      }
+    }
+
+    async function printReceiptBluetooth() {
+      if (!lastTransactionResult) {
+        alert('Tidak ada transaksi terakhir untuk dicetak.');
+        return;
+      }
+
+      if (!bluetoothCharacteristic) {
+        alert('Printer belum terhubung! Silakan hubungkan printer melalui menu Akun terlebih dahulu.');
+        switchTab('akun');
+        return;
+      }
+
+      try {
+        const encoder = new TextEncoder();
+        let commands = '\x1B\x40'; // Initialize printer
+        commands += '\x1B\x61\x01'; // Center alignment
+        commands += 'PULSAKU PRO PPOB\n';
+        commands += '--------------------------------\n';
+        commands += '\x1B\x61\x00'; // Left alignment
+        commands += `TRX ID : ${lastTransactionResult.id}\n`;
+        commands += `WAKTU  : ${lastTransactionResult.time}\n`;
+        commands += `PRODUK : ${lastTransactionResult.product}\n`;
+        commands += `TUJUAN : ${lastTransactionResult.target}\n`;
+        commands += `TOTAL  : ${formatRupiah(lastTransactionResult.price)}\n`;
+        commands += `${lastTransactionResult.sn}\n`;
+        commands += '--------------------------------\n';
+        commands += '\x1B\x61\x01'; // Center alignment
+        commands += 'Terima Kasih\n\n\n';
+
+        await bluetoothCharacteristic.writeValue(encoder.encode(commands));
+        alert('Perintah cetak berhasil dikirim ke printer thermal!');
+      } catch (err) {
+        console.error('Print failed:', err);
+        alert('Gagal mencetak: ' + err.message);
+      }
+    }
+
+    // PWA Install Prompt Handler
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('install-banner').classList.remove('hidden');
+    });
+
+    document.getElementById('btn-install').addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          console.log('User accepted install prompt');
+        }
+        deferredPrompt = null;
+        document.getElementById('install-banner').classList.add('hidden');
+      }
+    });
+
+    document.getElementById('btn-close-install').addEventListener('click', () => {
+      document.getElementById('install-banner').classList.add('hidden');
+    });
+
+    function setupNetworkStatus() {
+      const updateOnlineStatus = () => {
+        if (!navigator.onLine) {
+          document.getElementById('offline-banner').classList.remove('hidden');
+        } else {
+          document.getElementById('offline-banner').classList.add('hidden');
+        }
+      };
+      window.addEventListener('online', updateOnlineStatus);
+      window.addEventListener('offline', updateOnlineStatus);
+      updateOnlineStatus();
+    }
+
+    function resetData() {
+      if (confirm('Reset semua riwayat transaksi dan kembalikan saldo ke awal?')) {
+        saldoAgen = 1450000;
+        historyData = [];
+        updateHeaderSaldo();
+        renderHistory();
+        alert('Data berhasil direset.');
+      }
+    }
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('ServiceWorker registered scope:', reg.scope))
+          .catch(err => console.log('ServiceWorker registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
