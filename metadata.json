@@ -1,0 +1,6 @@
+{
+  "name": "PulsaKu PPOB Agent",
+  "description": "Aplikasi PWA Agen Pulsa & PPOB Terlengkap dengan Cek Nomor, Produk Lengkap, Riwayat Transaksi & Cetak Struk Bluetooth",
+  "requestFramePermissions": ["bluetooth"],
+  "majorCapabilities": []
+}
